@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Accessibility Decision Support Tool - India</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Healthcare Accessibility Decision Support Tool</h1>
+            <p class="header__subtitle">Primary Healthcare Facility Assessment for India</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <div class="nav__steps">
+                <div class="nav__step nav__step--active" data-step="demographics">
+                    <span class="nav__step-number">1</span>
+                    <span class="nav__step-title">Demographics</span>
+                </div>
+                <div class="nav__step" data-step="assessment">
+                    <span class="nav__step-number">2</span>
+                    <span class="nav__step-title">Assessment</span>
+                </div>
+                <div class="nav__step" data-step="results">
+                    <span class="nav__step-number">3</span>
+                    <span class="nav__step-title">Results</span>
+                </div>
+                <div class="nav__step" data-step="report">
+                    <span class="nav__step-number">4</span>
+                    <span class="nav__step-title">Report</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <!-- Demographics Section -->
+            <section id="demographics-section" class="section section--active">
+                <div class="section__header">
+                    <h2>Area Demographics & Disability Assessment</h2>
+                    <p>Enter population data to estimate the number of persons with disabilities in your catchment area.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="population" class="form-label">Total Population in Catchment Area</label>
+                        <input type="number" id="population" class="form-control" placeholder="e.g., 50000" min="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area-type" class="form-label">Area Classification</label>
+                        <select id="area-type" class="form-control">
+                            <option value="rural">Rural</option>
+                            <option value="urban">Urban</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="facility-name" class="form-label">Healthcare Facility Name</label>
+                        <input type="text" id="facility-name" class="form-control" placeholder="e.g., Primary Health Centre - Sector 15">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" id="state" class="form-control" placeholder="e.g., Maharashtra">
+                    </div>
+                </div>
+
+                <div class="disability-stats">
+                    <h3>Estimated Disability Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-card__number" id="total-disabled">-</div>
+                            <div class="stat-card__label">Total Persons with Disabilities</div>
+                            <div class="stat-card__note">Based on Census 2011 (2.21%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="disability-chart-container">
+                        <canvas id="disability-chart"></canvas>
+                    </div>
+
+                    <div class="disability-breakdown" id="disability-breakdown">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <button class="btn btn--primary btn--lg" id="next-to-assessment">
+                    Continue to Facility Assessment
+                </button>
+            </section>
+
+            <!-- Assessment Section -->
+            <section id="assessment-section" class="section">
+                <div class="section__header">
+                    <h2>Facility Accessibility Assessment</h2>
+                    <p>Evaluate your facility against accessibility standards for each area.</p>
+                </div>
+
+                <div class="assessment-progress">
+                    <div class="progress-bar">
+                        <div class="progress-bar__fill" id="assessment-progress-fill"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">0% Complete</span>
+                </div>
+
+                <div class="assessment-areas" id="assessment-areas">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div class="assessment-actions">
+                    <button class="btn btn--secondary" id="back-to-demographics">
+                        Back to Demographics
+                    </button>
+                    <button class="btn btn--primary btn--lg" id="calculate-results">
+                        Calculate Retrofitting Requirements
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="section">
+                <div class="section__header">
+                    <h2>Retrofitting Requirements & Cost Analysis</h2>
+                    <p>Based on your assessment, here are the required modifications and estimated costs.</p>
+                </div>
+
+                <div class="results-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="summary-card__number" id="total-cost">₹0</div>
+                            <div class="summary-card__label">Total Estimated Cost</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card__number" id="high-priority-items">0</div>
+                            <div class="summary-card__label">High Priority Items</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card__number" id="compliance-score">0%</div>
+                            <div class="summary-card__label">Current Compliance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-tabs">
+                    <button class="tab-btn tab-btn--active" data-tab="requirements">Requirements</button>
+                    <button class="tab-btn" data-tab="costs">Cost Breakdown</button>
+                    <button class="tab-btn" data-tab="timeline">Implementation Plan</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="requirements-tab" class="tab-pane tab-pane--active">
+                        <div id="requirements-list">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div id="costs-tab" class="tab-pane">
+                        <div class="cost-chart-container" style="position: relative; height: 400px;">
+                            <canvas id="cost-chart"></canvas>
+                        </div>
+                        <div id="cost-details">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div id="timeline-tab" class="tab-pane">
+                        <div id="implementation-phases">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button class="btn btn--secondary" id="back-to-assessment">
+                        Back to Assessment
+                    </button>
+                    <button class="btn btn--primary btn--lg" id="generate-report">
+                        Generate Detailed Report
+                    </button>
+                </div>
+            </section>
+
+            <!-- Report Section -->
+            <section id="report-section" class="section">
+                <div class="section__header">
+                    <h2>Comprehensive Assessment Report</h2>
+                    <p>Complete facility accessibility report with recommendations and implementation roadmap.</p>
+                </div>
+
+                <div class="report-actions">
+                    <button class="btn btn--primary" id="print-report">Print Report</button>
+                    <button class="btn btn--secondary" id="export-pdf">Export as PDF</button>
+                    <button class="btn btn--outline" id="start-over">Start New Assessment</button>
+                </div>
+
+                <div class="report-content" id="report-content">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Healthcare Accessibility Decision Support Tool - Government of India Initiative</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
