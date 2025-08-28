@@ -231,7 +231,7 @@ function calculateDisabilityStats() {
   appState.facilityName = facilityNameInput?.value || '';
   appState.state = stateInput?.value || '';
   
-  const totalDisabled = Math.round(population * 0.0221); // 2.21% from Census 2011
+  const totalDisabled = Math.round(population * 0.15); // 2.21% from Census 2011 //Estimated at 15%
   const totalDisabledElement = document.getElementById('total-disabled');
   if (totalDisabledElement) {
     totalDisabledElement.textContent = totalDisabled.toLocaleString();
@@ -277,7 +277,7 @@ function renderDisabilityChart() {
         },
         title: {
           display: true,
-          text: 'Distribution of Disability Types in India (Census 2011)'
+          text: 'Distribution of Impairment (Estimated at 15% of population)'
         }
       }
     }
